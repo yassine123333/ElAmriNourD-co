@@ -308,7 +308,7 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
                   disabled={busy}
                   className="rounded-full border border-amber-200 px-4 py-1 text-sm text-amber-800 transition hover:bg-amber-50 disabled:opacity-60"
                 >
-                  Supprimer l'image
+                  Supprimer l&apos;image
                 </button>
               ) : null}
               <button
