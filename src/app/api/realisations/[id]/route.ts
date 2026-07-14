@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAdminAuthorized } from "@/lib/admin";
 import { removeRealisation, removeRealisationImage } from "@/lib/realisations";
 
@@ -17,6 +18,9 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
 
   try {
     await removeRealisation(context.params.id);
+    revalidatePath("/");
+    revalidatePath("/galerie");
+    revalidatePath("/admin");
     return NextResponse.json({ ok: true });
   } catch (error) {
     return NextResponse.json(
@@ -40,6 +44,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
   try {
     const item = await removeRealisationImage(context.params.id);
+    revalidatePath("/");
+    revalidatePath("/galerie");
+    revalidatePath("/admin");
     return NextResponse.json({ item });
   } catch (error) {
     return NextResponse.json(

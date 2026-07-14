@@ -26,7 +26,10 @@ const toRealisation = (row: RealisationRow): Realisation => ({
       : row.created_at,
 });
 
-export async function getRealisations(category?: Category) {
+export async function getRealisations(
+  category?: Category,
+  includeWithoutImage = false,
+) {
   if (!isDatabaseConfigured) {
     const fallback = category
       ? SAMPLE_REALISATIONS.filter((item) => item.categorie === category)
@@ -35,9 +38,14 @@ export async function getRealisations(category?: Category) {
   }
 
   try {
-    const sql = category
-      ? "select id, titre, description, categorie, image_url, created_at from public.realisations where categorie = $1 order by created_at desc"
-      : "select id, titre, description, categorie, image_url, created_at from public.realisations order by created_at desc";
+    const filters = [
+      ...(category ? ["categorie = $1"] : []),
+      ...(!includeWithoutImage ? ["image_url is not null"] : []),
+    ];
+    const sql = `select id, titre, description, categorie, image_url, created_at
+      from public.realisations
+      ${filters.length ? `where ${filters.join(" and ")}` : ""}
+      order by created_at desc`;
     const values = category ? [category] : [];
 
     const result = await query<RealisationRow>(

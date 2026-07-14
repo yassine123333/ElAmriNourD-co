@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { isAdminAuthorized } from "@/lib/admin";
 import { createRealisation, getRealisations } from "@/lib/realisations";
 import { CATEGORIES, Category } from "@/lib/types";
@@ -59,6 +60,10 @@ export async function POST(request: NextRequest) {
       categorie: body.categorie,
       image_url: body.image_url,
     });
+
+    revalidatePath("/");
+    revalidatePath("/galerie");
+    revalidatePath("/admin");
 
     return NextResponse.json({ item }, { status: 201 });
   } catch (error) {
