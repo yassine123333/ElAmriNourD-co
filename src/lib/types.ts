@@ -13,7 +13,7 @@ export type Realisation = {
   titre: string;
   description: string;
   categorie: Category;
-  image_url: string;
+  image_url: string | null;
   created_at: string;
 };
 

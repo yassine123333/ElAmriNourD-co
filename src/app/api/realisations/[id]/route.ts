@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminAuthorized } from "@/lib/admin";
-import { removeRealisation } from "@/lib/realisations";
+import { removeRealisation, removeRealisationImage } from "@/lib/realisations";
 
 type RouteContext = {
   params: {
@@ -25,6 +25,29 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
           error instanceof Error
             ? error.message
             : "Erreur lors de la suppression.",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  const password = request.headers.get("x-admin-password");
+
+  if (!isAdminAuthorized(password)) {
+    return NextResponse.json({ message: "Acces refuse." }, { status: 401 });
+  }
+
+  try {
+    const item = await removeRealisationImage(context.params.id);
+    return NextResponse.json({ item });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message:
+          error instanceof Error
+            ? error.message
+            : "Erreur lors de la suppression de l'image.",
       },
       { status: 500 },
     );

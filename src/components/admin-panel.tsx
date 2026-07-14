@@ -166,6 +166,43 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
     }
   }
 
+  async function handleImageDelete(id: string) {
+    if (!confirm("Supprimer uniquement l'image de cette realisation ?")) {
+      return;
+    }
+
+    setBusy(true);
+    setFeedback("");
+
+    try {
+      const response = await fetch(`/api/realisations/${id}`, {
+        method: "PATCH",
+        headers: { "x-admin-password": password },
+      });
+      const data = (await response.json()) as {
+        item?: Realisation;
+        message?: string;
+      };
+
+      if (!response.ok || !data.item) {
+        throw new Error(data.message || "Suppression de l'image impossible.");
+      }
+
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? data.item! : item)),
+      );
+      setFeedback("Image retiree. La realisation a ete conservee.");
+    } catch (error) {
+      setFeedback(
+        error instanceof Error
+          ? error.message
+          : "Une erreur inattendue est survenue.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
   if (!isUnlocked) {
     return (
       <section className="mx-auto w-full max-w-md rounded-2xl border border-[var(--line)] bg-white p-6 shadow-sm">
@@ -264,13 +301,24 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
               <p className="font-medium text-[var(--ink-900)]">{item.titre}</p>
               <p className="text-sm text-[var(--ink-600)]">{item.categorie}</p>
             </div>
-            <button
-              onClick={() => handleDelete(item.id)}
-              disabled={busy}
-              className="rounded-full border border-red-200 px-4 py-1 text-sm text-red-700 transition hover:bg-red-50 disabled:opacity-60"
-            >
-              Supprimer
-            </button>
+            <div className="flex flex-wrap justify-end gap-2">
+              {item.image_url ? (
+                <button
+                  onClick={() => handleImageDelete(item.id)}
+                  disabled={busy}
+                  className="rounded-full border border-amber-200 px-4 py-1 text-sm text-amber-800 transition hover:bg-amber-50 disabled:opacity-60"
+                >
+                  Supprimer l'image
+                </button>
+              ) : null}
+              <button
+                onClick={() => handleDelete(item.id)}
+                disabled={busy}
+                className="rounded-full border border-red-200 px-4 py-1 text-sm text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+              >
+                Supprimer
+              </button>
+            </div>
           </article>
         ))}
       </div>

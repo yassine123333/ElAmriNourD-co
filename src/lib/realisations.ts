@@ -97,6 +97,36 @@ export async function removeRealisation(id: string) {
   }
 }
 
+export async function removeRealisationImage(id: string) {
+  if (!isDatabaseConfigured) {
+    throw new Error(
+      "Suppression impossible sans SUPABASE_DB_URL.",
+    );
+  }
+
+  try {
+    const result = await query<RealisationRow>(
+      `update public.realisations
+       set image_url = null
+       where id = $1
+       returning id, titre, description, categorie, image_url, created_at`,
+      [id],
+    );
+
+    const updated = result.rows[0];
+
+    if (!updated) {
+      throw new Error("Realisation introuvable.");
+    }
+
+    return toRealisation(updated);
+  } catch (error) {
+    throw new Error(
+      `Suppression de l'image echouee: ${error instanceof Error ? error.message : "erreur inconnue."}`,
+    );
+  }
+}
+
 export async function saveContactMessage(payload: ContactMessage) {
   if (!isDatabaseConfigured) {
     return;

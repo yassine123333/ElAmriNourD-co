@@ -10,9 +10,11 @@ create table if not exists public.realisations (
   categorie text not null check (
     categorie in ('Plafonds', 'Corniches', 'Moulures', U&'Staff d\00E9coratif', 'Autre')
   ),
-  image_url text not null,
+  image_url text,
   created_at timestamptz not null default now()
 );
+
+alter table public.realisations alter column image_url drop not null;
 
 create index if not exists realisations_created_at_idx
   on public.realisations (created_at desc);

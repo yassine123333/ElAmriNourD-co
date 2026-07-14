@@ -23,14 +23,20 @@ export function RealisationsGrid({ items }: RealisationsGridProps) {
           style={{ animationDelay: `${index * 90}ms` }}
         >
           <div className="aspect-[4/3] overflow-hidden">
-            <Image
-              src={item.image_url}
-              alt={item.titre}
-              width={1200}
-              height={900}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            />
+            {item.image_url ? (
+              <Image
+                src={item.image_url}
+                alt={item.titre}
+                width={1200}
+                height={900}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[var(--paper)] px-6 text-center text-sm text-[var(--ink-500)]">
+                Image retiree
+              </div>
+            )}
           </div>
           <div className="space-y-2 p-4">
             <p className="text-xs uppercase tracking-[0.14em] text-[var(--ink-500)]">
