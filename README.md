@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nour Amri Deco
 
-## Getting Started
+Site vitrine professionnel pour un atelier tunisien de decoration en platre.
 
-First, run the development server:
+## Stack
+
+- Next.js 14 (App Router) + TypeScript
+- Tailwind CSS
+- Supabase (Postgres) pour les metadonnees
+- Cloudinary pour l'upload et le service des images
+- Deploiement cible: Vercel
+
+## Fonctionnalites
+
+- Pages publiques:
+	- Accueil
+	- Galerie avec filtres par categorie
+	- A propos
+	- Contact
+- API:
+	- POST /api/contact
+	- GET, POST /api/realisations
+	- DELETE /api/realisations/[id]
+	- POST /api/upload
+- Admin:
+	- Espace /admin protege par mot de passe simple via header x-admin-password
+	- Upload image vers Cloudinary
+	- Ajout et suppression de realisations
+
+## Installation
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Puis ouvrez http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variables d'environnement
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Voir le fichier .env.example.
 
-## Learn More
+Variables requises:
 
-To learn more about Next.js, take a look at the following resources:
+- SUPABASE_DB_URL
+- CLOUDINARY_CLOUD_NAME
+- CLOUDINARY_API_KEY
+- CLOUDINARY_API_SECRET
+- ADMIN_PASSWORD
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+SUPABASE_DB_URL est la chaine de connexion Postgres complete (Connection string), pas l'URL projet https://...supabase.co.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Schema Supabase
 
-## Deploy on Vercel
+Initialisation recommandee en une seule etape:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Renseigner SUPABASE_DB_URL dans .env.local.
+2. Lancer npm run supabase:bootstrap.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Le script cree les tables, indexes et injecte un seed initial seulement si la table realisations est vide.
+Pour un workflow Supabase CLI, le meme script existe aussi dans supabase/migrations/202607130001_init_schema_seed.sql.
+
+### Table realisations
+
+- id uuid primary key default gen_random_uuid()
+- titre text not null
+- description text not null
+- categorie text not null
+- image_url text not null
+- created_at timestamp with time zone default now()
+
+### Table messages (optionnelle)
+
+- id uuid primary key default gen_random_uuid()
+- nom text not null
+- telephone text not null
+- message text not null
+- created_at timestamp with time zone default now()
+
+## Deploiement Vercel
+
+Le pipeline est compose de deux parties : GitHub Actions valide chaque pull request et chaque push sur `main`, puis Vercel realise le deploiement.
+
+1. Pousser le projet sur GitHub, avec `main` comme branche de production.
+2. Dans Vercel, importer le depot GitHub et conserver les reglages detectes pour Next.js.
+3. Dans **Settings > Environment Variables**, ajouter les variables du fichier `.env.example` pour les environnements **Production**, **Preview** et **Development** :
+   - `SUPABASE_DB_URL`
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+   - `ADMIN_PASSWORD`
+4. Dans **Settings > Git**, verifier que la branche de production est `main`.
+5. Lancer le premier deploiement.
+
+Chaque pull request cree un deploiement Preview. Chaque push sur `main` execute la verification CI puis declenche un deploiement Production via l'integration Git de Vercel.
+
+`SUPABASE_DB_URL` est un secret serveur : ne le prefixez jamais par `NEXT_PUBLIC_` et ne le commitez pas dans Git.
