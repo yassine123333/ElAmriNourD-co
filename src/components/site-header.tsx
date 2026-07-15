@@ -37,6 +37,7 @@ export function SiteHeader() {
             <NavLink href="/galerie" label="Galerie" />
             <NavLink href="/a-propos" label="A propos" />
             <NavLink href="/contact" label="Contact" />
+            <NavLink href="/admin" label="Admin" />
           </nav>
         </div>
 
@@ -49,6 +50,7 @@ export function SiteHeader() {
           <NavLink href="/galerie" label="Galerie" onClick={closeMenu} />
           <NavLink href="/a-propos" label="A propos" onClick={closeMenu} />
           <NavLink href="/contact" label="Contact" onClick={closeMenu} />
+          <NavLink href="/admin" label="Admin" onClick={closeMenu} />
         </nav>
       </div>
     </header>
