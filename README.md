@@ -80,8 +80,6 @@ Pour un workflow Supabase CLI, le meme script existe aussi dans supabase/migrati
 
 ## Deploiement Vercel
 
-Le pipeline est compose de deux parties : GitHub Actions valide chaque pull request et chaque push sur `main`, puis Vercel realise le deploiement.
-
 1. Pousser le projet sur GitHub, avec `main` comme branche de production.
 2. Dans Vercel, importer le depot GitHub et conserver les reglages detectes pour Next.js.
 3. Dans **Settings > Environment Variables**, ajouter les variables du fichier `.env.example` pour les environnements **Production**, **Preview** et **Development** :
@@ -93,6 +91,6 @@ Le pipeline est compose de deux parties : GitHub Actions valide chaque pull requ
 4. Dans **Settings > Git**, verifier que la branche de production est `main`.
 5. Lancer le premier deploiement.
 
-Chaque pull request cree un deploiement Preview. Chaque push sur `main` execute la verification CI puis declenche un deploiement Production via l'integration Git de Vercel.
+Chaque pull request cree un deploiement Preview. Chaque push sur `main` declenche un deploiement Production via l'integration Git de Vercel.
 
 `SUPABASE_DB_URL` est un secret serveur : ne le prefixez jamais par `NEXT_PUBLIC_` et ne le commitez pas dans Git.
