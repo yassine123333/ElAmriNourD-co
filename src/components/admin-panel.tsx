@@ -295,18 +295,18 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
         {items.map((item) => (
           <article
             key={item.id}
-            className="flex items-center justify-between rounded-xl border border-[var(--line)] bg-white px-4 py-3"
+            className="flex flex-col gap-3 rounded-xl border border-[var(--line)] bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div>
+            <div className="min-w-0">
               <p className="font-medium text-[var(--ink-900)]">{item.titre}</p>
               <p className="text-sm text-[var(--ink-600)]">{item.categorie}</p>
             </div>
-            <div className="flex flex-wrap justify-end gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-end">
               {item.image_url ? (
                 <button
                   onClick={() => handleImageDelete(item.id)}
                   disabled={busy}
-                  className="rounded-full border border-amber-200 px-4 py-1 text-sm text-amber-800 transition hover:bg-amber-50 disabled:opacity-60"
+                  className="min-h-11 rounded-full border border-amber-200 px-4 py-1 text-sm text-amber-800 transition hover:bg-amber-50 disabled:opacity-60"
                 >
                   Supprimer l&apos;image
                 </button>
@@ -314,7 +314,7 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
               <button
                 onClick={() => handleDelete(item.id)}
                 disabled={busy}
-                className="rounded-full border border-red-200 px-4 py-1 text-sm text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+                className="min-h-11 rounded-full border border-red-200 px-4 py-1 text-sm text-red-700 transition hover:bg-red-50 disabled:opacity-60"
               >
                 Supprimer
               </button>

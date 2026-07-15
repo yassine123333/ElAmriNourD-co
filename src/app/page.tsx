@@ -15,7 +15,7 @@ export default async function HomePage() {
             <p className="text-xs uppercase tracking-[0.3em] text-[var(--ink-500)]">
               Atelier tunisien de decoration en platre
             </p>
-            <h1 className="font-display text-4xl leading-tight text-[var(--ink-900)] md:text-6xl">
+            <h1 className="font-display text-3xl leading-tight text-[var(--ink-900)] sm:text-4xl md:text-6xl">
               Nour Amri Deco
               <span className="mt-2 block text-2xl text-[var(--brand-terracotta)] md:text-3xl">
                 Finitions artisanales pour plafonds, corniches et moulures
@@ -26,16 +26,16 @@ export default async function HomePage() {
               appartements et locaux professionnels, avec un souci constant de
               precision et de elegance.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/galerie"
-                className="rounded-full bg-[var(--ink-900)] px-6 py-3 text-sm font-semibold tracking-wide text-white transition hover:bg-[var(--ink-800)]"
+                className="min-h-12 rounded-full bg-[var(--ink-900)] px-6 py-3 text-center text-sm font-semibold tracking-wide text-white transition hover:bg-[var(--ink-800)]"
               >
                 Voir toutes nos realisations
               </Link>
               <Link
                 href="/contact"
-                className="rounded-full border border-[var(--line)] bg-white px-6 py-3 text-sm font-semibold tracking-wide text-[var(--ink-800)] transition hover:border-[var(--ink-600)]"
+                className="min-h-12 rounded-full border border-[var(--line)] bg-white px-6 py-3 text-center text-sm font-semibold tracking-wide text-[var(--ink-800)] transition hover:border-[var(--ink-600)]"
               >
                 Nous contacter
               </Link>
@@ -57,12 +57,12 @@ export default async function HomePage() {
       </section>
 
       <section className="section-wrap space-y-6 py-8">
-        <div className="flex items-end justify-between gap-4">
+          <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-[var(--ink-500)]">
               Portfolio
             </p>
-            <h2 className="font-display text-3xl text-[var(--ink-900)] md:text-4xl">
+            <h2 className="font-display text-3xl leading-tight text-[var(--ink-900)] md:text-4xl">
               Nos meilleures realisations
             </h2>
           </div>
