@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       image_url?: string;
     };
 
-    if (!body.titre || !body.description || !body.image_url || !body.categorie) {
+    if (!body.titre || !body.image_url || !body.categorie) {
       return NextResponse.json(
         { message: "Champs manquants." },
         { status: 400 },
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     const item = await createRealisation({
       titre: body.titre,
-      description: body.description,
+      description: body.description?.trim() || "",
       categorie: body.categorie,
       image_url: body.image_url,
     });

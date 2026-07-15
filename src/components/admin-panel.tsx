@@ -30,7 +30,7 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
   const [busy, setBusy] = useState(false);
 
   const canSubmit = useMemo(
-    () => Boolean(form.titre && form.description && form.file),
+    () => Boolean(form.titre && form.file),
     [form],
   );
 
@@ -70,7 +70,7 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
     event.preventDefault();
 
     if (!canSubmit || !form.file) {
-      setFeedback("Veuillez completer tous les champs et ajouter une image.");
+      setFeedback("Ajoutez un titre et une image.");
       return;
     }
 
@@ -266,7 +266,7 @@ export function AdminPanel({ initialItems }: AdminPanelProps) {
             }
             className="rounded-xl border border-[var(--line)] px-4 py-2 md:col-span-2"
             rows={3}
-            placeholder="Description courte"
+            placeholder="Description courte (optionnelle)"
           />
           <input
             type="file"
